@@ -21,6 +21,8 @@ import AmbientGlow from './components/AmbientGlow';
 import SocialProof from './components/SocialProof';
 import BeforeAfter from './components/BeforeAfter';
 import MagneticWrapper from './components/MagneticWrapper';
+import SoundController from './components/SoundController';
+import CustomContextMenu from './components/CustomContextMenu';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
       <Preloader />
       <EliteCursor />
       <AmbientGlow />
+      <SoundController />
+      <CustomContextMenu />
       <SocialProof />
       <main className="min-h-screen">
         <Navbar />
