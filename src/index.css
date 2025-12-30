@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+:root {
+  --bg-main: #0B0B0B;
+  --bg-surface: #1A1A1A;
+  --bg-card: #242424;
+  --text-main: #FFFFFF;
+  --text-dim: rgba(255, 255, 255, 0.4);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root.light {
+  --bg-main: #F8F9FA;
+  --bg-surface: #FFFFFF;
+  --bg-card: #EBEEF1;
+  --text-main: #0B0B0B;
+  --text-dim: rgba(0, 0, 0, 0.5);
+  --text-muted: rgba(0, 0, 0, 0.7);
+  --border-color: rgba(0, 0, 0, 0.1);
+}
+
+@theme {
+  --color-primary: #A6CE39;
+  --color-primary-dark: #8eb32d;
+  --color-dark: var(--bg-main);
+  --color-dark-surface: var(--bg-surface);
+  --color-dark-card: var(--bg-card);
+  --color-white: var(--text-main);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  @apply font-sans antialiased overflow-x-hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@layer utilities {
+  .glass-effect {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-white;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 bg-primary text-black font-bold rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0B0B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(166, 206, 57, 0.5);
+}
