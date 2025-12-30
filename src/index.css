@@ -32,10 +32,17 @@
   --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
 }
 
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
 body {
   background-color: var(--bg-main);
   color: var(--text-main);
-  @apply font-sans antialiased overflow-x-hidden;
+  @apply font-sans antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Sparkles } from 'lucide-react';
+import MagneticWrapper from './MagneticWrapper';
 
 const Hero = () => {
     return (
@@ -45,16 +46,20 @@ const Hero = () => {
                         transition={{ delay: 0.3 }}
                         className="flex flex-col sm:flex-row items-center gap-4"
                     >
-                        <button className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 group">
-                            Quero meu Site Agora
-                            <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                        </button>
-                        <a
-                            href="#portfolio"
-                            className="w-full sm:w-auto px-6 py-3 border border-white/10 rounded-full hover:bg-white/5 transition-colors text-center font-bold"
-                        >
-                            Ver Modelos
-                        </a>
+                        <MagneticWrapper strength={0.3}>
+                            <button className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 group">
+                                Quero meu Site Agora
+                                <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                            </button>
+                        </MagneticWrapper>
+                        <MagneticWrapper strength={0.3}>
+                            <a
+                                href="#portfolio"
+                                className="w-full sm:w-auto px-6 py-3 border border-white/10 rounded-full hover:bg-white/5 transition-colors text-center font-bold inline-block"
+                            >
+                                Ver Modelos
+                            </a>
+                        </MagneticWrapper>
                     </motion.div>
 
                     <motion.div

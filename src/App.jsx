@@ -16,11 +16,19 @@ import BudgetCalculator from './components/BudgetCalculator';
 import BlogExpress from './components/BlogExpress';
 import BackToTop from './components/BackToTop';
 import Preloader from './components/Preloader';
+import EliteCursor from './components/EliteCursor';
+import AmbientGlow from './components/AmbientGlow';
+import SocialProof from './components/SocialProof';
+import BeforeAfter from './components/BeforeAfter';
+import MagneticWrapper from './components/MagneticWrapper';
 
 function App() {
   return (
     <>
       <Preloader />
+      <EliteCursor />
+      <AmbientGlow />
+      <SocialProof />
       <main className="min-h-screen">
         <Navbar />
         <Hero />
@@ -28,6 +36,7 @@ function App() {
         <Stats />
         <Niches />
         <Services />
+        <BeforeAfter />
         <BudgetCalculator />
         <Process />
         <Portfolio />

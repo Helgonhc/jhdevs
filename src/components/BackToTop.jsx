@@ -34,7 +34,7 @@ const BackToTop = () => {
     };
 
     return (
-        <div className={`fixed bottom-8 right-8 z-[90] transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-50 pointer-events-none'}`}>
+        <div className={`fixed bottom-24 right-5 md:bottom-8 md:right-8 z-[90] transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-50 pointer-events-none'}`}>
             <button
                 onClick={scrollToTop}
                 className="relative w-14 h-14 bg-dark-card border border-white/10 rounded-full flex items-center justify-center text-primary shadow-2xl hover:bg-primary hover:text-dark transition-all group"

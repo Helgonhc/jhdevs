@@ -1,13 +1,32 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>jh-dev-site</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0B0B0B" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="description"
+    content="JH DEV'S - Desenvolvimento de Sites de Alta Performance, Landing Pages e Estratégias Digitais para alavancar seu negócio." />
+  <meta name="keywords" content="desenvolvimento web, landing pages, sites profissionais, jh devs, marketing digital" />
+  <meta property="og:title" content="JH DEV'S | Sites que Convertem" />
+  <meta property="og:description"
+    content="Transformamos visitantes em clientes com sites rápidos, modernos e focados em resultados." />
+  <meta property="og:type" content="website" />
+  <title>JH DEV'S | Web Design & Estratégia Digital</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+
 </html>

@@ -39,15 +39,15 @@ const BudgetCalculator = () => {
                         </div>
                         <h3 className="text-3xl font-display font-black mb-8">Monte seu <span className="text-primary italic">Plano de Sucesso</span></h3>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                             {services.map((service) => (
                                 <button
                                     key={service.id}
                                     onClick={() => toggleService(service.id)}
-                                    className={`p-4 rounded-2xl border text-left transition-all flex items-center justify-between group ${selected.includes(service.id) ? 'bg-primary border-primary text-dark' : 'bg-white/2 border-white/5 hover:border-primary/50'}`}
+                                    className={`p-3 md:p-4 rounded-2xl border text-left transition-all flex items-center justify-between group ${selected.includes(service.id) ? 'bg-primary border-primary text-dark' : 'bg-white/2 border-white/5 hover:border-primary/50'}`}
                                 >
-                                    <span className="text-sm font-bold">{service.label}</span>
-                                    {selected.includes(service.id) && <CheckCircle2 size={18} className="text-dark" />}
+                                    <span className="text-xs md:text-sm font-bold leading-tight">{service.label}</span>
+                                    {selected.includes(service.id) && <CheckCircle2 size={16} className="text-dark shrink-0 ml-2" />}
                                 </button>
                             ))}
                         </div>
