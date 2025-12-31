@@ -185,12 +185,17 @@ const AdminDashboard = () => {
         try {
             const payload = {
                 name: formData.name,
-                client_id: formData.client_id,
+                client_id: editingProject ? editingProject.client_id : formData.client_id, // Preserve client_id on edit
                 status: formData.status,
                 progress: parseInt(formData.progress),
                 preview_url: formData.preview_url,
                 updated_at: new Date()
             };
+
+            if (!payload.client_id) {
+                alert("Erro: O projeto deve estar vinculado a um cliente.");
+                return;
+            }
 
             if (editingProject) {
                 const { error } = await supabase
