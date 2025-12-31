@@ -40,6 +40,7 @@ const AdminDashboard = () => {
     const [editingProject, setEditingProject] = useState(null);
     const [editingClient, setEditingClient] = useState(null);
     const [currentClientFiles, setCurrentClientFiles] = useState([]);
+    const [modalTab, setModalTab] = useState('dados'); // 'dados' | 'arquivos'
 
     // Form States (Project)
     const [formData, setFormData] = useState({
@@ -135,6 +136,7 @@ const AdminDashboard = () => {
             setIsClientModalOpen(false);
             setEditingClient(null);
             setClientForm({ full_name: '', email: '', phone: '', address: '', business_name: '', document: '' });
+            setModalTab('dados');
             fetchData();
             alert(editingClient ? "Dados do cliente atualizados!" : "Cliente pré-cadastrado com sucesso!");
         } catch (err) {
@@ -144,6 +146,7 @@ const AdminDashboard = () => {
 
     const openEditClient = async (client) => {
         setEditingClient(client);
+        setModalTab('dados');
         setClientForm({
             full_name: client.full_name || '',
             email: client.email || '',
@@ -449,87 +452,122 @@ const AdminDashboard = () => {
                                 <button onClick={() => setIsClientModalOpen(false)} className="p-4 bg-white/5 rounded-2xl text-white/30 hover:text-white transition-all"><X size={20} /></button>
                             </div>
 
-                            <form onSubmit={handleSaveClient} className="p-10">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                                    {/* Personal Info */}
-                                    <div className="space-y-6">
-                                        <div className="space-y-2">
-                                            <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><UserPlus size={10} /> Nome Completo</label>
-                                            <input type="text" required value={clientForm.full_name} onChange={(e) => setClientForm({ ...clientForm, full_name: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold uppercase" placeholder="NOME DO CLIENTE" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><Mail size={10} /> E-mail de Acesso</label>
-                                            <input type="email" required value={clientForm.email} onChange={(e) => setClientForm({ ...clientForm, email: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold lowercase" placeholder="e-mail@servico.com" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><Phone size={10} /> Telefone / WhatsApp</label>
-                                            <input type="text" value={clientForm.phone} onChange={(e) => setClientForm({ ...clientForm, phone: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold" placeholder="(00) 00000-0000" />
-                                        </div>
-                                    </div>
-
-                                    {/* Business Info */}
-                                    <div className="space-y-6">
-                                        <div className="space-y-2">
-                                            <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><Building2 size={10} /> Nome da Empresa</label>
-                                            <input type="text" value={clientForm.business_name} onChange={(e) => setClientForm({ ...clientForm, business_name: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold uppercase" placeholder="RAZÃO SOCIAL OU NOME FANTASIA" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><FileText size={10} /> CPF / CNPJ</label>
-                                            <input type="text" value={clientForm.document} onChange={(e) => setClientForm({ ...clientForm, document: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold" placeholder="000.000.000-00" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><MapPin size={10} /> Endereço Completo</label>
-                                            <input type="text" value={clientForm.address} onChange={(e) => setClientForm({ ...clientForm, address: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold uppercase" placeholder="RUA, NÚMERO, BAIRRO, CIDADE - UF" />
-                                        </div>
-                                    </div>
+                            {editingClient && (
+                                <div className="px-10 py-4 bg-white/[0.02] border-b border-white/5 flex gap-8">
+                                    {[
+                                        { id: 'dados', label: 'Dados Cadastrais', icon: <UserPlus size={14} /> },
+                                        { id: 'arquivos', label: 'Dossiê de Arquivos', icon: <Package size={14} /> }
+                                    ].map(tab => (
+                                        <button
+                                            key={tab.id}
+                                            type="button"
+                                            onClick={() => setModalTab(tab.id)}
+                                            className={`flex items-center gap-3 pb-4 px-2 text-[10px] font-black uppercase tracking-[3px] transition-all relative ${modalTab === tab.id ? 'text-primary' : 'text-white/20 hover:text-white/40'
+                                                }`}
+                                        >
+                                            {tab.icon} {tab.label}
+                                            {modalTab === tab.id && <motion.div layoutId="modalTabLine" className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary shadow-[0_0_10px_#7CFF01]" />}
+                                        </button>
+                                    ))}
                                 </div>
+                            )}
 
-                                <div className="flex gap-4">
-                                    <button type="submit" className="flex-1 bg-primary text-dark font-black py-6 rounded-3xl hover:scale-[1.02] shadow-primary/20 transition-all text-xs tracking-widest uppercase flex items-center justify-center gap-3">
-                                        <ShieldCheck size={20} /> {editingClient ? 'SALVAR ALTERAÇÕES' : 'CADASTRAR PERFIL ELITE'}
-                                    </button>
-                                </div>
+                            <div className="p-10 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                                {modalTab === 'dados' ? (
+                                    <form onSubmit={handleSaveClient} className="space-y-10">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                            {/* Personal Info */}
+                                            <div className="space-y-6">
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><UserPlus size={10} /> Nome Completo</label>
+                                                    <input type="text" required value={clientForm.full_name} onChange={(e) => setClientForm({ ...clientForm, full_name: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold uppercase" placeholder="NOME DO CLIENTE" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><Mail size={10} /> E-mail de Acesso</label>
+                                                    <input type="email" required value={clientForm.email} onChange={(e) => setClientForm({ ...clientForm, email: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold lowercase" placeholder="e-mail@servico.com" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><Phone size={10} /> Telefone / WhatsApp</label>
+                                                    <input type="text" value={clientForm.phone} onChange={(e) => setClientForm({ ...clientForm, phone: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold" placeholder="(00) 00000-0000" />
+                                                </div>
+                                            </div>
 
-                                {editingClient && (
-                                    <div className="mt-12 pt-12 border-t border-white/5">
-                                        <div className="flex items-center justify-between mb-8">
-                                            <h4 className="text-xl font-display font-black text-white italic uppercase tracking-tighter flex items-center gap-3">
-                                                <Package className="text-primary" size={24} /> Arquivos do Cliente
-                                            </h4>
-                                            <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">{currentClientFiles.length} Arquivos</span>
+                                            {/* Business Info */}
+                                            <div className="space-y-6">
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><Building2 size={10} /> Nome da Empresa</label>
+                                                    <input type="text" value={clientForm.business_name} onChange={(e) => setClientForm({ ...clientForm, business_name: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold uppercase" placeholder="RAZÃO SOCIAL OU NOME FANTASIA" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><FileText size={10} /> CPF / CNPJ</label>
+                                                    <input type="text" value={clientForm.document} onChange={(e) => setClientForm({ ...clientForm, document: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold" placeholder="000.000.000-00" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-[4px] ml-4"><MapPin size={10} /> Endereço Completo</label>
+                                                    <input type="text" value={clientForm.address} onChange={(e) => setClientForm({ ...clientForm, address: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-[22px] py-5 px-8 text-white focus:border-primary transition-all text-sm font-bold uppercase" placeholder="RUA, NÚMERO, BAIRRO, CIDADE - UF" />
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <button type="submit" className="w-full bg-primary text-dark font-black py-6 rounded-3xl hover:scale-[1.02] shadow-primary/20 transition-all text-xs tracking-widest uppercase flex items-center justify-center gap-3">
+                                            <ShieldCheck size={20} /> {editingClient ? 'SALVAR ALTERAÇÕES' : 'CADASTRAR PERFIL ELITE'}
+                                        </button>
+                                    </form>
+                                ) : (
+                                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <h4 className="text-xl font-display font-black text-white italic uppercase tracking-tighter">Ativos Disponíveis</h4>
+                                                <p className="text-[10px] text-white/20 font-black uppercase tracking-widest mt-1">Arquivos enviados pelo cliente para produção</p>
+                                            </div>
+                                            <span className="px-4 py-2 bg-white/5 rounded-xl text-[10px] font-black text-white/40 uppercase tracking-widest border border-white/5">
+                                                {currentClientFiles.length} Itens
+                                            </span>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             {currentClientFiles.length === 0 ? (
-                                                <div className="col-span-2 py-10 bg-white/[0.02] border border-dashed border-white/5 rounded-3xl text-center">
-                                                    <p className="text-[10px] text-white/20 font-black uppercase tracking-[2px]">Nenhum arquivo enviado pelo cliente.</p>
+                                                <div className="col-span-2 py-20 bg-white/[0.02] border border-dashed border-white/10 rounded-[40px] text-center">
+                                                    <Package className="mx-auto text-white/5 mb-4" size={48} />
+                                                    <p className="text-[10px] text-white/20 font-black uppercase tracking-[3px]">Aguardando envios do cliente.</p>
                                                 </div>
                                             ) : (
                                                 currentClientFiles.map(file => (
-                                                    <div key={file.id} className="bg-white/[0.02] border border-white/5 p-5 rounded-3xl flex items-center justify-between group/file">
-                                                        <div className="flex items-center gap-4 overflow-hidden">
-                                                            <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover/file:bg-primary group-hover/file:text-dark transition-all shrink-0">
-                                                                <FileText size={18} />
+                                                    <motion.div
+                                                        layout
+                                                        key={file.id}
+                                                        className="bg-white/[0.03] border border-white/5 p-6 rounded-[32px] hover:border-primary/30 transition-all group/file relative overflow-hidden"
+                                                    >
+                                                        <div className="flex items-center gap-5">
+                                                            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover/file:bg-primary group-hover/file:text-dark transition-all shrink-0">
+                                                                <FileText size={24} />
                                                             </div>
-                                                            <div className="overflow-hidden">
-                                                                <p className="text-white font-black text-xs uppercase italic truncate">{file.name}</p>
-                                                                <div className="flex items-center gap-2 mt-1">
-                                                                    <span className="px-1.5 py-0.5 bg-primary/10 text-primary text-[7px] font-black uppercase rounded tracking-wider">{file.category}</span>
-                                                                    <p className="text-[8px] text-white/20 font-black uppercase tracking-widest">{(file.size / 1024 / 1024).toFixed(1)} MB</p>
+                                                            <div className="overflow-hidden pr-12">
+                                                                <p className="text-white font-black text-sm uppercase italic truncate tracking-tight">{file.name}</p>
+                                                                <div className="flex flex-wrap items-center gap-3 mt-2">
+                                                                    <span className="px-2 py-1 bg-white/5 text-white/40 text-[8px] font-black uppercase rounded-lg tracking-wider border border-white/5 italic">{file.category}</span>
+                                                                    <p className="text-[9px] text-white/20 font-black uppercase tracking-widest">{(file.size / 1024 / 1024).toFixed(1)} MB</p>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className="flex gap-2">
-                                                            <a href={file.url} target="_blank" rel="noreferrer" className="p-2 bg-white/5 rounded-lg text-white/20 hover:text-primary transition-all"><Download size={14} /></a>
-                                                            <button type="button" onClick={() => handleDeleteFile(file.id)} className="p-2 bg-white/5 rounded-lg text-white/20 hover:text-red-500 transition-all"><Trash2 size={14} /></button>
+
+                                                        {file.description && (
+                                                            <div className="mt-4 pt-4 border-t border-white/5">
+                                                                <p className="text-[9px] text-white/40 font-bold leading-relaxed line-clamp-2 italic italic opacity-60 group-hover/file:opacity-100 transition-opacity">"{file.description}"</p>
+                                                            </div>
+                                                        )}
+
+                                                        <div className="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-0 group-hover/file:opacity-100 transition-all scale-90 group-hover/file:scale-100">
+                                                            <a href={file.url} target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white hover:bg-primary hover:text-dark transition-all shadow-xl"><Download size={18} /></a>
+                                                            <button type="button" onClick={() => handleDeleteFile(file.id)} className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white hover:bg-red-500 transition-all shadow-xl"><Trash2 size={18} /></button>
                                                         </div>
-                                                    </div>
+                                                    </motion.div>
                                                 ))
                                             )}
                                         </div>
                                     </div>
                                 )}
-                            </form>
+                            </div>
                         </motion.div>
                     </div>
                 )}
