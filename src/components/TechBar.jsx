@@ -8,7 +8,7 @@ const TechBar = () => {
         { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
         { name: 'Google Ads', icon: 'https://www.vectorlogo.zone/logos/google_ads/google_ads-icon.svg' },
         { name: 'Framer Motion', icon: 'https://www.vectorlogo.zone/logos/framer/framer-icon.svg' },
-        { name: 'Vite', icon: 'https://www.vectorlogo.zone/logos/vitejs/vitejs-icon.svg' },
+        { name: 'Vite', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg' },
     ];
 
     return (
