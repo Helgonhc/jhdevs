@@ -30,10 +30,10 @@ const MagneticWrapper = ({ children, strength = 2.0 }) => { // Ultra strong pull
             onMouseLeave={handleMouseLeave}
             animate={{ x: position.x, y: position.y }}
             transition={{ type: 'spring', stiffness: 300, damping: 20, mass: 0.2 }}
-            className="inline-block p-12 -m-12 cursor-pointer z-50 relative" // Massive hit area
+            className="inline-block p-5 -m-5 cursor-pointer z-50 relative" // Reduced hit area to avoid button overlap
             style={{ touchAction: 'none' }}
         >
-            <div className="pointer-events-none">
+            <div className="relative z-10">
                 {children}
             </div>
         </motion.div>
