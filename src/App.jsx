@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Niches from './components/Niches';
@@ -28,14 +28,17 @@ import AdminDemo from './components/AdminDemo';
 import LiveDemoViewer from './components/LiveDemoViewer';
 import ConciergeAI from './components/ConciergeAI';
 import WarpTransition from './components/WarpTransition';
-import { useState } from 'react';
+import MagicGenerator from './components/MagicGenerator';
+import VoiceControl from './components/VoiceControl';
+import { TreasureHuntProvider } from './components/TreasureHunt';
+import HiddenCoin from './components/HiddenCoin';
 import { User } from 'lucide-react';
 
 function App() {
   const [adminOpen, setAdminOpen] = useState(false);
 
   return (
-    <>
+    <TreasureHuntProvider>
       <Preloader />
       <EliteCursor />
       <AmbientGlow />
@@ -44,6 +47,7 @@ function App() {
       <DevMode />
       <ConciergeAI />
       <WarpTransition />
+      <VoiceControl />
       <SocialProof />
 
       {/* Floating Client Area Button */}
@@ -65,25 +69,39 @@ function App() {
         component={AdminDemo}
       />
 
-      <main className="min-h-screen">
+      <main className="min-h-screen relative">
+        {/* Coin 1: Hidden in Hero Area */}
+        <HiddenCoin className="top-32 left-10" />
+
         <Navbar />
         <Hero />
         <TechBar />
         <Stats />
+        <MagicGenerator />
         <Niches />
         <Services />
         <BeforeAfter />
         <BudgetCalculator />
         <Process />
+
+        {/* Coin 2: Hidden near Process */}
+        <div className="relative">
+          <HiddenCoin className="top-0 right-20" />
+        </div>
+
         <Portfolio />
         <BlogExpress />
         <Testimonials />
         <FAQ />
         <Contact />
         <Footer />
+
+        {/* Coin 3: Hidden in Footer Area */}
+        <HiddenCoin className="bottom-10 left-10" />
+
         <BackToTop />
       </main>
-    </>
+    </TreasureHuntProvider>
   );
 }
 
