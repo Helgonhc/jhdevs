@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import MagneticWrapper from './MagneticWrapper';
 
 import ThreeHero from './ThreeHero';
@@ -56,12 +57,12 @@ const Hero = () => {
                             </a>
                         </MagneticWrapper>
                         <MagneticWrapper strength={0.3}>
-                            <a
-                                href="#portfolio"
+                            <Link
+                                to="/login"
                                 className="w-full sm:w-auto px-6 py-3 border border-white/10 rounded-full hover:bg-white/5 transition-colors text-center font-bold inline-block"
                             >
-                                Ver Modelos
-                            </a>
+                                Área do Cliente
+                            </Link>
                         </MagneticWrapper>
                     </motion.div>
 
