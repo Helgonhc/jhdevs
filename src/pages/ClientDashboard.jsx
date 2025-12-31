@@ -25,7 +25,9 @@ import {
     Trash2,
     Check,
     X,
-    ShieldCheck
+    ShieldCheck,
+    Monitor,
+    Smartphone
 } from 'lucide-react';
 
 const ClientDashboard = () => {
@@ -37,6 +39,11 @@ const ClientDashboard = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
     const [isSaving, setIsSaving] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
+
+    // Cinema Preview States
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState('');
+    const [previewDevice, setPreviewDevice] = useState('desktop'); // 'desktop' | 'mobile'
     const navigate = useNavigate();
 
     const [fileForm, setFileForm] = useState({
@@ -227,6 +234,15 @@ const ClientDashboard = () => {
         navigate('/login');
     };
 
+    const handleOpenPreview = (url) => {
+        if (!url) {
+            alert('Seu site está sendo preparado! O link de homologação será liberado em breve.');
+            return;
+        }
+        setPreviewUrl(url);
+        setIsPreviewOpen(true);
+    };
+
     if (loading) return (
         <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center space-y-4">
             <RefreshCw className="text-primary animate-spin" size={32} />
@@ -333,10 +349,10 @@ const ClientDashboard = () => {
                                             </div>
                                         </div>
                                         <button
-                                            onClick={() => activeProject.preview_url ? window.open(activeProject.preview_url, '_blank') : alert('Seu site está sendo preparado! O link de homologação será liberado em breve.')}
+                                            onClick={() => handleOpenPreview(activeProject.preview_url)}
                                             className="flex items-center gap-3 bg-white text-dark font-black px-8 py-5 rounded-[24px] hover:scale-105 transition-all text-[11px] uppercase tracking-widest shadow-2xl"
                                         >
-                                            <ExternalLink size={18} /> {activeProject.preview_url ? 'Abrir Preview Live' : 'Aguardando Link'}
+                                            <ExternalLink size={18} /> {activeProject.preview_url ? 'VISUALIZAR AGORA' : 'Aguardando Link'}
                                         </button>
                                     </div>
                                     <div className="grid md:grid-cols-2 gap-20">
@@ -475,10 +491,10 @@ const ClientDashboard = () => {
 
                                                 <div className="shrink-0 w-full md:w-auto">
                                                     <button
-                                                        onClick={() => project.preview_url ? window.open(project.preview_url, '_blank') : alert('Seu site está sendo preparado! O link de homologação será liberado em breve.')}
+                                                        onClick={() => handleOpenPreview(project.preview_url)}
                                                         className="w-full md:w-auto flex items-center justify-center gap-3 bg-white text-dark font-black px-8 py-5 rounded-[24px] hover:scale-105 transition-all text-[10px] uppercase tracking-widest shadow-2xl group-hover:bg-primary transition-colors"
                                                     >
-                                                        <ExternalLink size={16} /> {project.preview_url ? 'Abrir Preview' : 'Aguardando Link'}
+                                                        <ExternalLink size={16} /> {project.preview_url ? 'VISUALIZAR AGORA' : 'Aguardando Link'}
                                                     </button>
                                                 </div>
                                             </div>
@@ -579,6 +595,70 @@ const ClientDashboard = () => {
                     )}
                 </AnimatePresence>
             </main>
+
+            {/* CINEMA PREVIEW MODAL */}
+            <AnimatePresence>
+                {isPreviewOpen && (
+                    <div className="fixed inset-0 z-[500] flex flex-col bg-[#050505] backdrop-blur-3xl">
+                        {/* Preview Header */}
+                        <div className="flex items-center justify-between px-8 py-6 border-b border-white/5 bg-black/40 backdrop-blur-md">
+                            <div className="flex items-center gap-6">
+                                <button
+                                    onClick={() => setIsPreviewOpen(false)}
+                                    className="p-3 bg-white/5 rounded-2xl text-white/40 hover:text-white hover:bg-white/10 transition-all"
+                                >
+                                    <X size={20} />
+                                </button>
+                                <div>
+                                    <h3 className="text-xl font-display font-black text-white italic uppercase tracking-tighter">Cinema <span className="text-primary">Preview</span></h3>
+                                    <p className="text-[9px] text-white/20 font-black uppercase tracking-[3px] mt-0.5">Live Experience Engine</p>
+                                </div>
+                            </div>
+
+                            {/* Device Selector */}
+                            <div className="bg-white/5 p-1.5 rounded-2xl border border-white/5 flex items-center gap-2">
+                                <button
+                                    onClick={() => setPreviewDevice('desktop')}
+                                    className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${previewDevice === 'desktop' ? 'bg-primary text-dark shadow-lg shadow-primary/20' : 'text-white/30 hover:text-white'}`}
+                                >
+                                    <Monitor size={16} /> Desktop
+                                </button>
+                                <button
+                                    onClick={() => setPreviewDevice('mobile')}
+                                    className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${previewDevice === 'mobile' ? 'bg-primary text-dark shadow-lg shadow-primary/20' : 'text-white/30 hover:text-white'}`}
+                                >
+                                    <Smartphone size={16} /> Mobile
+                                </button>
+                            </div>
+
+                            <a
+                                href={previewUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="flex items-center gap-3 bg-white/5 px-6 py-4 rounded-2xl text-white/40 hover:text-primary transition-all text-[10px] font-black uppercase tracking-widest border border-white/5"
+                            >
+                                <ExternalLink size={16} /> Abrir em Nova Aba
+                            </a>
+                        </div>
+
+                        {/* Preview Area */}
+                        <div className="flex-1 overflow-hidden p-8 flex justify-center items-start bg-[radial-gradient(circle_at_center,_rgba(124,255,1,0.03)_0%,_transparent_70%)]">
+                            <motion.div
+                                layout
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className={`bg-black shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden transition-all duration-500 rounded-[32px] ${previewDevice === 'desktop' ? 'w-full h-full' : 'w-[400px] h-[800px] rounded-[60px] border-[12px] border-white/5 shadow-2xl scale-[0.9]'}`}
+                            >
+                                <iframe
+                                    src={previewUrl}
+                                    className="w-full h-full border-none bg-white"
+                                    title="Project Preview"
+                                />
+                            </motion.div>
+                        </div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
