@@ -425,6 +425,70 @@ const ClientDashboard = () => {
                         </motion.div>
                     )}
 
+                    {/* PROJECTS TAB */}
+                    {activeTab === 'projects' && (
+                        <motion.div key="projects" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+                            <div className="mb-12">
+                                <h2 className="text-4xl font-display font-black text-white italic uppercase tracking-tighter">Meus <span className="text-primary">Projetos</span></h2>
+                                <p className="text-white/20 text-[10px] font-black uppercase tracking-[6px] mt-3">Acompanhamento detalhado de suas entregas</p>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-8">
+                                {projects.length === 0 ? (
+                                    <div className="bg-dark-surface border-2 border-dashed border-white/5 rounded-[56px] py-40 text-center">
+                                        <Briefcase size={48} className="mx-auto text-white/5 mb-6" />
+                                        <h2 className="text-xl font-display font-black text-white italic uppercase tracking-widest mb-2 opacity-20">Nenhum projeto vinculado</h2>
+                                        <p className="text-white/20 font-black uppercase tracking-[3px] text-[10px]">Em breve você verá suas entregas aqui.</p>
+                                    </div>
+                                ) : (
+                                    projects.map((project) => (
+                                        <div key={project.id} className="bg-dark-surface border border-white/5 rounded-[48px] p-10 relative overflow-hidden group hover:border-primary/20 transition-all shadow-3xl">
+                                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+                                                <div className="flex-1 space-y-6 w-full">
+                                                    <div className="flex items-center justify-between md:justify-start md:gap-6">
+                                                        <h3 className="text-2xl font-display font-black text-white italic uppercase tracking-tighter">{project.name}</h3>
+                                                        <div className="px-4 py-1.5 bg-primary/10 text-primary border border-primary/20 rounded-full text-[8px] font-black uppercase tracking-[2px] flex items-center gap-2">
+                                                            <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" /> {project.status}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="space-y-4">
+                                                        <div className="flex justify-between items-end">
+                                                            <p className="text-white/20 text-[9px] font-black uppercase tracking-[3px]">Progresso da Entrega</p>
+                                                            <p className="text-xl font-display font-black text-white italic">{project.progress}%</p>
+                                                        </div>
+                                                        <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                                            <motion.div
+                                                                initial={{ width: 0 }}
+                                                                animate={{ width: `${project.progress}%` }}
+                                                                className="h-full bg-primary shadow-[0_0_15px_rgba(124,255,1,0.4)]"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="flex flex-wrap gap-4 pt-4 border-t border-white/5">
+                                                        <div className="flex items-center gap-2 text-[9px] font-black text-white/30 uppercase tracking-widest">
+                                                            <Clock size={12} className="text-primary" /> Atualizado em {new Date(project.updated_at).toLocaleDateString()}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="shrink-0 w-full md:w-auto">
+                                                    <button
+                                                        onClick={() => project.preview_url ? window.open(project.preview_url, '_blank') : alert('Seu site está sendo preparado! O link de homologação será liberado em breve.')}
+                                                        className="w-full md:w-auto flex items-center justify-center gap-3 bg-white text-dark font-black px-8 py-5 rounded-[24px] hover:scale-105 transition-all text-[10px] uppercase tracking-widest shadow-2xl group-hover:bg-primary transition-colors"
+                                                    >
+                                                        <ExternalLink size={16} /> {project.preview_url ? 'Abrir Preview' : 'Aguardando Link'}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </motion.div>
+                    )}
+
                     {/* DOCUMENTS TAB */}
                     {activeTab === 'documents' && (
                         <motion.div key="documents" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
