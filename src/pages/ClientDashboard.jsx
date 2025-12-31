@@ -168,6 +168,11 @@ const ClientDashboard = () => {
                 .eq('auth_id', user.id);
 
             if (updateError) throw updateError;
+
+            // Optimistic update with cache busting
+            const publicUrlWithCache = `${publicUrl}?t=${new Date().getTime()}`;
+            setProfile(prev => ({ ...prev, avatar_url: publicUrlWithCache }));
+
             alert("Foto de perfil atualizada!");
             fetchDashboardData();
         } catch (err) {
@@ -288,11 +293,11 @@ const ClientDashboard = () => {
                     <img src="/logo.png" alt="JH DEV'S LOGO" className="h-14 w-auto object-contain self-start" />
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-primary/10 rounded-2xl overflow-hidden border border-primary/20 relative group">
-                            {profile?.avatar_url ? (
+                            {profile?.avatar_url && !profile.avatar_url.includes('logo.png') ? (
                                 <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-primary font-display font-black text-xl italic bg-primary/5">
-                                    {profile?.full_name?.[0] || 'U'}
+                                    {profile?.full_name?.[0] || <UserCircle size={24} />}
                                 </div>
                             )}
                         </div>
@@ -411,10 +416,12 @@ const ClientDashboard = () => {
                                     <div className="bg-dark-surface border border-white/5 p-10 rounded-[48px] text-center flex flex-col items-center">
                                         <div className="relative group w-40 h-40 mb-8">
                                             <div className="w-full h-full rounded-[40px] overflow-hidden border-2 border-primary/20 bg-primary/5">
-                                                {profile?.avatar_url ? (
+                                                {profile?.avatar_url && !profile.avatar_url.includes('logo.png') ? (
                                                     <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
                                                 ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-primary font-display font-black text-4xl italic">{profile?.full_name?.[0] || 'U'}</div>
+                                                    <div className="w-full h-full flex items-center justify-center text-primary font-display font-black text-4xl italic">
+                                                        {profile?.full_name?.[0] || <UserCircle size={64} />}
+                                                    </div>
                                                 )}
                                             </div>
                                             <label className="absolute -bottom-4 -right-4 w-12 h-12 bg-primary text-dark rounded-2xl flex items-center justify-center cursor-pointer hover:scale-110 transition-all shadow-xl shadow-primary/20 border-4 border-[#070707]">
