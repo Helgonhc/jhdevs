@@ -3,12 +3,15 @@ import { motion } from 'framer-motion';
 import { ChevronRight, Sparkles } from 'lucide-react';
 import MagneticWrapper from './MagneticWrapper';
 
+import ThreeHero from './ThreeHero';
+
 const Hero = () => {
     return (
         <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+            <ThreeHero />
             {/* Background Glows */}
-            <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/20 blur-[120px] rounded-full" />
-            <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full" />
+            <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/20 blur-[120px] rounded-full z-[1]" />
+            <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full z-[1]" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="max-w-4xl">
@@ -47,10 +50,10 @@ const Hero = () => {
                         className="flex flex-col sm:flex-row items-center gap-4"
                     >
                         <MagneticWrapper strength={0.3}>
-                            <button className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 group">
+                            <a href="#contact" className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 group">
                                 Quero meu Site Agora
                                 <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                            </button>
+                            </a>
                         </MagneticWrapper>
                         <MagneticWrapper strength={0.3}>
                             <a

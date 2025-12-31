@@ -77,3 +77,30 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(166, 206, 57, 0.5);
 }
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Matrix (Dev Mode) Theme */
+.matrix-theme {
+  --color-primary: #22c55e;
+  /* Green-500 */
+  --color-background: #000000;
+}
+
+.matrix-theme h1,
+.matrix-theme h2,
+.matrix-theme h3,
+.matrix-theme p,
+.matrix-theme span,
+.matrix-theme div {
+  font-family: 'Courier New', monospace !important;
+}
+
+.matrix-theme ::selection {
+  background-color: #22c55e;
+  color: black;
+}

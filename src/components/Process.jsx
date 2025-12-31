@@ -1,8 +1,20 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { MessageSquare, Layout, Code, Rocket, CheckCircle2 } from 'lucide-react';
 
 const Process = () => {
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start center", "end center"]
+    });
+
+    const scaleX = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
     const steps = [
         {
             title: 'Briefing & Estratégia',
@@ -31,9 +43,9 @@ const Process = () => {
     ];
 
     return (
-        <section id="process" className="py-24 bg-dark">
-            <div className="container mx-auto px-6">
-                <div className="text-center mb-20">
+        <section id="process" className="py-24 bg-dark relative overflow-hidden">
+            <div className="container mx-auto px-6" ref={containerRef}>
+                <div className="text-center mb-32">
                     <h2 className="text-primary font-bold tracking-widest uppercase text-sm mb-4">Como funciona</h2>
                     <h3 className="text-4xl md:text-5xl font-display font-black">
                         DO BRIEFING AO <span className="text-primary italic">SUCESSO</span>
@@ -44,26 +56,47 @@ const Process = () => {
                 </div>
 
                 <div className="relative">
-                    {/* Connecting Line (Desktop) */}
-                    <div className="hidden lg:block absolute top-1/2 left-0 w-full h-px bg-white/5 -translate-y-1/2" />
+                    {/* Living Beam (Desktop) - The Neon Line */}
+                    <div className="hidden lg:block absolute top-[2.5rem] left-0 w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                            style={{ scaleX, transformOrigin: "left" }}
+                            className="w-full h-full bg-gradient-to-r from-primary via-white to-primary shadow-[0_0_20px_rgba(166,206,57,0.8)]"
+                        />
+                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative z-10">
+                    {/* Mobile Vertical Beam */}
+                    <div className="lg:hidden absolute top-0 left-1/2 -translate-x-1/2 w-1 h-full bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                            style={{ scaleY: scaleX, transformOrigin: "top" }}
+                            className="w-full h-full bg-gradient-to-b from-primary via-white to-primary shadow-[0_0_20px_rgba(166,206,57,0.8)]"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 relative z-10">
                         {steps.map((step, i) => (
                             <motion.div
                                 key={step.title}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: i * 0.1 }}
+                                viewport={{ margin: "-50px" }}
+                                transition={{ delay: i * 0.2 }}
                                 className="flex flex-col items-center text-center group"
                             >
-                                <div className={`w-20 h-20 ${step.color} rounded-[2rem] flex items-center justify-center mb-8 relative group-hover:scale-110 transition-transform duration-500`}>
-                                    <step.icon size={32} />
-                                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-dark border border-white/10 rounded-full flex items-center justify-center text-sm font-black text-white/40">
+                                <div className="relative mb-8">
+                                    <div className={`w-20 h-20 ${step.color} rounded-full flex items-center justify-center relative z-20 group-hover:scale-110 transition-transform duration-500 border border-white/5 shadow-[0_0_30px_rgba(0,0,0,0.5)]`}>
+                                        <step.icon size={32} />
+                                    </div>
+
+                                    {/* Glowing Node Halo */}
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-primary/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-dark border border-white/10 rounded-full flex items-center justify-center text-sm font-black text-white/40 z-30">
                                         0{i + 1}
                                     </div>
                                 </div>
+
                                 <h4 className="text-xl font-bold mb-4">{step.title}</h4>
-                                <p className="text-white/40 text-sm leading-relaxed">
+                                <p className="text-white/40 text-sm leading-relaxed px-4">
                                     {step.desc}
                                 </p>
                             </motion.div>

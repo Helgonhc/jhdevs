@@ -23,8 +23,17 @@ import BeforeAfter from './components/BeforeAfter';
 import MagneticWrapper from './components/MagneticWrapper';
 import SoundController from './components/SoundController';
 import CustomContextMenu from './components/CustomContextMenu';
+import DevMode from './components/DevMode';
+import AdminDemo from './components/AdminDemo';
+import LiveDemoViewer from './components/LiveDemoViewer';
+import ConciergeAI from './components/ConciergeAI';
+import WarpTransition from './components/WarpTransition';
+import { useState } from 'react';
+import { User } from 'lucide-react';
 
 function App() {
+  const [adminOpen, setAdminOpen] = useState(false);
+
   return (
     <>
       <Preloader />
@@ -32,7 +41,30 @@ function App() {
       <AmbientGlow />
       <SoundController />
       <CustomContextMenu />
+      <DevMode />
+      <ConciergeAI />
+      <WarpTransition />
       <SocialProof />
+
+      {/* Floating Client Area Button */}
+      <div className="fixed top-24 right-6 z-40 hidden md:block">
+        <MagneticWrapper strength={0.2}>
+          <button
+            onClick={() => setAdminOpen(true)}
+            className="flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-colors"
+          >
+            <User size={14} className="text-primary" />
+            Área do Cliente
+          </button>
+        </MagneticWrapper>
+      </div>
+
+      <LiveDemoViewer
+        isOpen={adminOpen}
+        onClose={() => setAdminOpen(false)}
+        component={AdminDemo}
+      />
+
       <main className="min-h-screen">
         <Navbar />
         <Hero />
