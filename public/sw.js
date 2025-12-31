@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jh-devs-v1';
+const CACHE_NAME = 'jh-devs-v2';
 const urlsToCache = ['/', '/index.html'];
 
 self.addEventListener('install', event => {
