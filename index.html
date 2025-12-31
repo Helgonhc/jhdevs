@@ -14,6 +14,9 @@
   <meta property="og:description"
     content="Transformamos visitantes em clientes com sites rápidos, modernos e focados em resultados." />
   <meta property="og:type" content="website" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>JH DEV'S | Web Design & Estratégia Digital</title>
 </head>
 
@@ -21,9 +24,19 @@
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
   <script>
+    // NUCLEAR OPTION: FORCE UNREGISTER ALL SERVICE WORKERS IMMEDIATELY
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        if (registrations.length > 0) {
+          for (let registration of registrations) {
+            registration.unregister().then(() => console.log('Legacy SW destroyed.'));
+          }
+          // Force reload if we found a zombie, but only once to avoid loops
+          if (!sessionStorage.getItem('sw_nuked')) {
+            sessionStorage.setItem('sw_nuked', 'true');
+            window.location.reload();
+          }
+        }
       });
     }
   </script>
