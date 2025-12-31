@@ -668,7 +668,7 @@ const ClientDashboard = () => {
                                 initial={{ opacity: 0, y: 40 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 className={`relative bg-[#0a0a0a] shadow-[0_0_100px_rgba(0,0,0,0.8)] border-[12px] border-[#1a1a1a] overflow-hidden transition-all duration-700 flex flex-col
-                                    ${previewDevice === 'desktop' ? 'w-[90%] h-[80%] rounded-[40px]' : 'w-[380px] h-[780px] rounded-[60px]'}
+                                    ${previewDevice === 'desktop' ? 'w-full max-w-5xl aspect-video rounded-[40px]' : 'w-[380px] h-[780px] rounded-[60px]'}
                                 `}
                             >
                                 {/* Screen Content */}
@@ -676,16 +676,16 @@ const ClientDashboard = () => {
                                     {/* 1. OFF STATE */}
                                     {!isPowerOn && !isBooting && (
                                         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black">
-                                            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none opacity-50" />
+                                            <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.07] to-transparent pointer-events-none" />
                                             <motion.button
-                                                animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }}
+                                                animate={{ scale: [1, 1.05, 1], opacity: [0.6, 1, 0.6] }}
                                                 transition={{ duration: 2, repeat: Infinity }}
                                                 onClick={handlePowerToggle}
-                                                className="w-20 h-20 rounded-full border border-primary/30 flex items-center justify-center text-primary/30 group-hover:text-primary transition-all"
+                                                className="w-24 h-24 rounded-full border-2 border-primary/50 flex items-center justify-center text-primary hover:bg-primary/10 transition-all shadow-[0_0_30px_rgba(124,255,1,0.2)]"
                                             >
-                                                <Power size={32} />
+                                                <Power size={40} />
                                             </motion.button>
-                                            <p className="text-[9px] text-white/10 font-black uppercase tracking-[5px] mt-6">Sistema Standby - Clique para Iniciar</p>
+                                            <p className="text-[11px] text-white/30 font-black uppercase tracking-[6px] mt-8 bg-white/5 py-2 px-6 rounded-full border border-white/5">Sistema Standby - Clique para Iniciar</p>
                                         </div>
                                     )}
 
@@ -697,28 +697,28 @@ const ClientDashboard = () => {
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 className="flex flex-col items-center"
                                             >
-                                                <img src="/logo.png" alt="JH DEV'S" className="h-16 w-auto object-contain mb-8 filter brightness-0 invert opacity-50" />
-                                                <div className="h-0.5 w-48 bg-white/5 rounded-full overflow-hidden">
+                                                <img src="/logo.png" alt="JH DEV'S" className="h-24 w-auto object-contain mb-10 filter brightness-100" />
+                                                <div className="h-1 w-64 bg-white/10 rounded-full overflow-hidden">
                                                     <motion.div
                                                         initial={{ width: 0 }}
                                                         animate={{ width: "100%" }}
                                                         transition={{ duration: 3, ease: "easeInOut" }}
-                                                        className="h-full bg-primary shadow-[0_0_15px_#7CFF01]"
+                                                        className="h-full bg-primary shadow-[0_0_20px_#7CFF01]"
                                                     />
                                                 </div>
-                                                <div className="mt-8 space-y-2 text-center">
+                                                <div className="mt-10 space-y-4 text-center">
                                                     <motion.p
                                                         initial={{ opacity: 0 }}
                                                         animate={{ opacity: [0, 1, 1, 0] }}
                                                         transition={{ duration: 3.5, times: [0, 0.2, 0.8, 1] }}
-                                                        className="text-[10px] text-primary font-black uppercase tracking-[4px]"
+                                                        className="text-base text-primary font-black uppercase tracking-[8px] italic"
                                                     >
-                                                        Preparado para se surpreender?
+                                                        PREPARADO PARA SE SURPREENDER?
                                                     </motion.p>
-                                                    <p className="text-[8px] text-white/20 font-black uppercase tracking-widest">Iniciando Motor de Experiência JH DEV...</p>
+                                                    <p className="text-[10px] text-white/40 font-black uppercase tracking-[4px]">Iniciando Motor de Experiência JH DEV...</p>
                                                 </div>
                                             </motion.div>
-                                            <div className="absolute bottom-10 font-mono text-[8px] text-white/10 tracking-widest">JH_DEV_OS v3.0 // KERNEL LOADED</div>
+                                            <div className="absolute bottom-10 font-mono text-[9px] text-white/10 tracking-[5px]">JH_DEV_OS v3.0 // KERNEL LOADED</div>
                                         </div>
                                     )}
 
