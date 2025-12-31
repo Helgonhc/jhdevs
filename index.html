@@ -21,21 +21,29 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div
+      style="position:fixed; inset:0; background:#000; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:sans-serif; z-index:9999;">
+      <div
+        style="width:40px; height:40px; border:3px solid rgba(255,255,255,0.1); border-top-color:#8b5cf6; border-radius:50%; animation:spin 1s linear infinite;">
+      </div>
+      <p style="margin-top:20px; font-size:12px; opacity:0.6; letter-spacing:1px;">CARREGANDO SISTEMA...</p>
+    </div>
+    <style>
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
   <script>
-    // NUCLEAR OPTION: FORCE UNREGISTER ALL SERVICE WORKERS IMMEDIATELY
+    // SAFE CLEANUP: Unregister SW purely. No reload loops.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(function (registrations) {
-        if (registrations.length > 0) {
-          for (let registration of registrations) {
-            registration.unregister().then(() => console.log('Legacy SW destroyed.'));
-          }
-          // Force reload if we found a zombie, but only once to avoid loops
-          if (!sessionStorage.getItem('sw_nuked')) {
-            sessionStorage.setItem('sw_nuked', 'true');
-            window.location.reload();
-          }
+        for (let registration of registrations) {
+          registration.unregister();
         }
       });
     }
